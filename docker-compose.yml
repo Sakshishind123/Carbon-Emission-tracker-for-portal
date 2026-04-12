@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=sakshi#12345
+      - MYSQL_DB=geeklogin
+      - DATABASE_URL=mysql+pymysql://root:sakshi#12345@db/geeklogin
+    volumes:
+      - .:/app
+    networks:
+      - backend
+  
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: sakshi#12345
+      MYSQL_DATABASE: geeklogin
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend
+networks:
+  backend:
+
+volumes:
+  mysql_data:

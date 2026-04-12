@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+         .video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+         .border {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            width: 40%;
+            margin-top: 100px;
+        }
+
+        .textbox {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        } 
+    </style>
+    <script>
+        function showHideFarmerID() {
+            var role = document.getElementById('Role').value;
+            var farmerIDDiv = document.getElementById('farmer-id');
+
+            if (role === 'Farmer') {
+                farmerIDDiv.style.display = 'block';
+            } else {
+                farmerIDDiv.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Background Video -->
+    <div class="video">
+        <video src="https://cdn.pixabay.com/video/2017/12/20/13495-248644905_large.mp4" autoplay loop muted playsinline></video>
+    </div>
+
+    <!-- Registration Form -->
+    <div align="center">
+        <div class="border">
+            <div class="header">
+                <h1>Register</h1>
+            </div>
+            <form action="/register" method="POST">
+                <div class="msg">{{ msg }}</div>
+                <label for="username">Username:</label><br>
+                <input id="username" name="username" type="text" placeholder="Enter Your Username" class="textbox"><br><br>
+
+                <label for="password">Password:</label><br>
+                <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"><br><br>
+
+                <label for="email">Email:</label><br>
+                <input id="email" name="email" type="email" placeholder="Enter Your Email ID" class="textbox"><br><br>
+
+                <label for="Role">Select Role:</label><br>
+                <select id="Role" name="Role" required onchange="showHideFarmerID()">
+                    <option value="" disabled selected>Select Role</option>
+                    <option value="Farmer">Farmer</option>
+                    <option value="Buyer">Buyer</option>
+                </select><br><br>
+
+                <!-- Farmer ID Input -->
+                <div id="farmer-id" style="display: none;">
+                    <label for="farmerID">Farmer ID:</label><br>
+                    <input type="text" id="farmerID" name="farmerID" placeholder="Enter Farmer ID" class="textbox"><br><br>
+                </div>
+
+                <input type="submit" class="btn" value="Sign Up">
+            </form>
+            <p>Already have an account? <a href="/login">Sign In here</a></p>
+        </div>
+    </div>
+</body>
+</html>

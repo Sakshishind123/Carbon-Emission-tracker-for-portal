@@ -1,0 +1,419 @@
+
+<!-- original code -------------------------------- -->
+
+{% extends 'ProductBase.html' %}
+{% block body %}
+<style>
+   body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+h1, h2, h3 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+}
+
+input[type="submit"],
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #45a049;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+}
+
+/* Action Buttons */
+.btn-danger, .btn-success {
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px;
+}
+
+.btn-danger {
+    background-color: #d9534f;
+    color: white;
+}
+
+.btn-success {
+    background-color: #5cb85c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+.btn-success:hover {
+    background-color: #4cae4c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        margin: 30px auto;
+        padding: 20px;
+    }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left; /* Align text to the left */
+    padding: 8px; /* Add some padding for spacing */
+}
+
+th {
+    background-color: green;
+    color: white;
+}
+
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+    
+    <div class="container my-3">
+        <h1>Product Entry Portal</h1>
+        <form action="" method="POST">
+
+            <label for="product_name">Product Name:</label>
+            <input type="text" id="product_name" name="product_name" placeholder="Enter Product Name" required>
+
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" placeholder="Enter Price" required>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" placeholder="Enter Quantity" required>
+
+            <label for="category">Select category:</label>
+            <select id="category" name="category" required>
+                <option value="" disabled selected>Select Category</option>
+                <option value="Vegetable">Vegetable</option>
+                <option value="Spices">Spices</option>
+                <option value="Fruit">Fruit</option>
+                <option value="Dairy">Dairy</option>
+            </select>
+            <!-- Removed the Product ID input field -->
+
+<button type="button"  onclick="fetchCompetitorPrices()">Check Competitor Prices</button>
+
+<br>
+<br>
+
+            <input type="submit" value="Submit" href="/addfrmr">
+            <a href="/ahtml" class="btn btn-primary">Next</a>
+        </form>
+    </div>
+    <div class="container-fluid my-3">
+        <h2>Products</h2>
+    
+        <table class="table table-green table-striped-columns">
+            <thead>
+                <tr>
+                    <th scope="col">S.No</th>
+                    <th scope="col">Farmer ID</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in farmer %}
+                <tr>
+                    <td>{{ loop.index }}</td>  <!-- S.No -->
+                    <td>{{ todo.fid }}</td>  <!-- Farmer ID -->
+                    <td>{{ todo.product_name }}</td>  <!-- Product Name -->
+                    <td>{{ todo.price }}</td>  <!-- Price -->
+                    <td>{{ todo.quantity }}</td>  <!-- Quantity -->
+                    <td>{{ todo.category }}</td>  <!-- Category -->
+                    <td>{{ todo.date_created }}</td>  <!-- Time -->
+                    <td>
+                        <a href="/ProductDelete/{{todo.sno}}" class="btn btn-danger btn-sm mx-1">Delete</a>
+                        <a href="/ProductUpdate/{{todo.sno}}" class="btn btn-success btn-sm mx-1">Update</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container mt-5">
+       
+        <!-- <button id="fetchPricesBtn" class="btn btn-primary" onclick="fetchCompetitorPrices()">Get Prices</button> -->
+
+        <!-- <button type="button" onclick="fetchSuggestedPrice()">Get Suggested Price</button> -->
+        <!-- <label for="product_name">Product Name:</label>
+<input type="text" id="product_name" name="product_name">
+
+<label for="farmer_price">Farmer's Price:</label>
+<input type="number" id="farmer_price" name="farmer_price"> -->
+
+<button type="button" id="fetch_price_btn">Get Suggested Price</button>
+
+<p id="suggested_price"></p>
+
+
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Farmer id</th>
+                    <th>Product Name</th>
+                    <th>Price per kg</th>
+                </tr>
+            </thead>
+            <tbody id="competitorPriceTable"></tbody>
+        </table>
+    </div>
+
+    <!-- jQuery (Must be before Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      function fetchCompetitorPrices() {
+        let productName = document.getElementById("product_name").value;
+
+        if (!productName) {
+            alert("Please enter a Product Name.");
+            return;
+        }
+        fetch(`/get_competitor_prices?product_name=${encodeURIComponent(productName)}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not OK");
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Full API Response:", JSON.stringify(data, null, 2)); // Keep this debug log to see the actual structure
+        
+        let priceTable = document.getElementById("competitorPriceTable");
+        priceTable.innerHTML = "";
+        
+        // Update the table header to include Farmer ID
+       
+        priceTable.innerHTML = tableHeader;
+        
+        if (!data.competitor_prices || data.competitor_prices.length === 0) {
+            priceTable.innerHTML += "<tr><td colspan='3'>No competitor prices available</td></tr>";
+        } else {
+            data.competitor_prices.forEach(item => {
+                // Check all possible field names for farmer ID
+                const farmerId = item.farmer_id || item["farmer id"] || item.fid || "N/A";
+                
+                let row = `<tr>
+                    <td>${farmerId}</td>
+                    <td>${item.product_name || "N/A"}</td>
+                    <td>₹${item.price || "N/A"}/kg</td>
+                </tr>`;
+                priceTable.innerHTML += row;
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching competitor prices:", error);
+        alert("Failed to fetch competitor prices. Try again later.");
+    });
+}
+    //     fetch(`/get_competitor_prices?product_name=${encodeURIComponent(productName)}`)
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error("Network response was not OK");
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             console.log("Full API Response:", JSON.stringify(data, null, 2)); // 🔍 Debugging Step
+
+    //             let priceTable = document.getElementById("competitorPriceTable");
+    //             priceTable.innerHTML = "";
+
+    //             if (!data.competitor_prices || data.competitor_prices.length === 0) {
+    //                 priceTable.innerHTML = "<tr><td colspan='2'>No competitor prices available</td></tr>";
+    //             } else {
+    //                 data.competitor_prices.forEach(item => {
+    //                     let row = `<tr>
+    //                         <td>${item["farmer id"] !== undefined ? item["farmer id"] : "N/A"}</td>
+
+    //                         <td>${item.product_name !== undefined ? item.product_name : "N/A"}</td>
+    //                         <td>₹${item.price !== undefined ? item.price : "N/A"}/kg</td>
+                        
+    //                         </tr>`;
+    //                     priceTable.innerHTML += row;
+    //                 });
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error("Error fetching competitor prices:", error);
+    //             alert("Failed to fetch competitor prices. Try again later.");
+    //         });
+    //   }
+
+      document.addEventListener("DOMContentLoaded", function () {
+    // Ensure script runs after HTML is loaded
+    document.getElementById("fetch_price_btn").addEventListener("click", fetchSuggestedPrice);
+});
+
+async function fetchSuggestedPrice() {
+    try {
+        let productInput = document.getElementById('product_name');
+
+
+        if (!productInput) {
+            console.error("Error: Product name input field not found.");
+            return;
+        }
+
+        let productName = productInput.value.trim();
+        if (!productName) {
+            alert("Please enter a valid product name.");
+            return;
+        }
+
+        // ✅ Fetch competitor prices
+        const response = await fetch(`/get_competitor_prices?product_name=${encodeURIComponent(productName)}`);
+        if (!response.ok) throw new Error("Network response was not OK");
+
+        const data = await response.json();
+        console.log("Full API Response:", JSON.stringify(data, null, 2)); // Debugging
+
+        let priceTable = document.getElementById("competitorPriceTable");
+        priceTable.innerHTML = ""; // Clear previous entries
+
+        if (!data.competitor_prices || data.competitor_prices.length === 0) {
+    priceTable.innerHTML = "<tr><td colspan='2'>No competitor prices available</td></tr>";
+    document.getElementById('suggested_price').innerText = "No price suggestion available";
+    return;
+}
+
+        // ✅ Display competitor prices in the table
+        let prices = [];
+        data.competitor_prices.forEach(item => {
+            prices.push(item.price); // Collecting all prices for calculation
+
+            let row = `<tr>
+                <td>${item.fid !== undefined ? item.fid : "N/A"}</td>
+                <td>${item.product_name !== undefined ? item.product_name : "N/A"}</td>
+                <td>₹${item.price !== undefined ? item.price : "N/A"}/kg</td>
+            </tr>`;
+            priceTable.innerHTML += row;
+        });
+
+        // ✅ Calculate the suggested price (Average)
+        // let suggestedPrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
+        if (prices.length > 0) {
+    let suggestedPrice = prices.reduce((sum, price) => sum + (price || 0), 0) / prices.length;
+    document.getElementById('suggested_price').innerText = `Suggested Price: ₹${suggestedPrice.toFixed(2)}/kg`;
+} else {
+    document.getElementById('suggested_price').innerText = "No price suggestion available";
+}
+
+
+        // ✅ Display the suggested price
+        document.getElementById('suggested_price').innerText = `Suggested Price: ₹${suggestedPrice.toFixed(2)}/kg`;
+
+    } catch (error) {
+        console.error("Error fetching suggested price:", error);
+        document.getElementById('suggestedPrice').innerText = "Error fetching price";
+    }
+}
+
+// ✅ Ensure the script runs after HTML is loaded
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("fetch_price_btn").addEventListener("click", fetchSuggestedPrice);
+});
+
+</script>
+
+    
+    {% endblock body %}
+    

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2e7d32;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h2 {
+            color: #388e3c;
+            margin-top: 25px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        .total-box {
+            background: #f8f8f8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-right: 10px;
+            background: #2e7d32;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .btn:hover {
+            background: #1b5e20;
+        }
+        
+        .btn-clear {
+            background: #d32f2f;
+        }
+        
+        .btn-clear:hover {
+            background: #b71c1c;
+        }
+        
+        .btn-back {
+            background: #616161;
+        }
+        
+        .btn-back:hover {
+            background: #424242;
+        }
+        
+        @media (max-width: 600px) {
+            .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Summary</h1>
+        
+        <div>
+            <h2>Bill Number:</h2>
+            <p><strong>{{bill_id}}</strong></p>
+        </div>
+        
+        <div class="total-box">
+            <h2>Total Amount:</h2>
+            <p><strong>₹{{total_amount}}</strong></p>
+        </div>
+        
+        <!-- <h2>Product Details</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Farmer ID</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in rows %}
+                <tr>
+                    <td>{{ todo.sno }}</td>
+                    <td>{{ todo.qty }}</td>
+                    <td>{{ todo.fid }}</td>
+                    <td>₹{{ todo.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> -->
+        
+        {% if cart %}
+        <h2>Your Items</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td>{{ item.product_name }}</td>
+                    <td>₹{{ item.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.price * item.quantity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="total-box">
+            <h2>Total Payable:</h2>
+            <p><strong>₹{{ total_amount }}</strong></p>
+        </div>
+        
+        <div>
+            <form action="/paynow" method="POST">
+                <button type="submit" class="btn">Pay Now</button>
+            </form>
+            <form action="/clearcart" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-clear">Clear Cart</button>
+            </form>
+            <a href="{{ url_for('addcart') }}" class="btn btn-back">Continue Shopping</a>
+        </div>
+        {% else %}
+        <div>
+            <p>Your cart is empty.</p>
+            <a href="{{ url_for('addcart') }}" class="btn btn-back">Browse Products</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
